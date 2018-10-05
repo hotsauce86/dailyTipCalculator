@@ -48,13 +48,14 @@ public class tipCalculator {
                 if (tipSheet.get(j).getStartHour() == i){
                     numOfWorkers++;
                     aveTipsThisHour += workerTipRate(tipSheet.get(j));
-                    totaltipsperhour += tipSheet.get(j).getTips();
+
                 }
                 if (tipSheet.get(j).getEndHour() == i){
                     numOfWorkers--;
                     aveTipsThisHour -= workerTipRate(tipSheet.get(j));
-                    totaltipsperhour -= tipSheet.get(j).getTips();
+                    totaltipsperhour += tipSheet.get(j).getTips();
                 }
+                
             }
 
             hourSheet workersThisHour = new hourSheet(i, numOfWorkers, aveTipsThisHour, totaltipsperhour);
