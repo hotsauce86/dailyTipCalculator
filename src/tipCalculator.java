@@ -30,6 +30,9 @@ public class tipCalculator {
         workersPerHour(1);
         System.out.println("worker 1 tips per hour: "+ workerTipRate(someWorker2));
 
+        System.out.println((workerTipRate(someWorker1)+workerTipRate(someWorker2)+workerTipRate(someWorker3)));
+
+
     }
 
 
