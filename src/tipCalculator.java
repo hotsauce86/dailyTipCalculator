@@ -32,9 +32,31 @@ public class tipCalculator {
 
         System.out.println((workerTipRate(someWorker1)+workerTipRate(someWorker2)+workerTipRate(someWorker3)));
 
+        compareWorkerToStoreTips( someWorker7);
 
     }
+    /*
+        compareWorkerToStoreTips
 
+        This shows the difference from what the store hourly tip rate is from what the recorded workers hourly tip rate
+        a diffence +/- 2 dollars should stand out as an error or a sign that someone is cheating on tips
+
+        this is currently one hour, needs to apply to all hours worked
+
+     */
+    public static void compareWorkerToStoreTips( worker someWorker){
+        int workerStart = someWorker.getStartHour();
+        int workerEnd = someWorker.getEndHour();
+        float weird=0;
+
+        for (int i = workerStart; i <=workerEnd; i++){
+            weird += hourSheetslist.get(i-3).getTipsRate()/hourSheetslist.get(i-3).getWorkers()-workerTipRate(someWorker);
+            System.out.println(hourSheetslist.get(i-3).getTipsRate()/hourSheetslist.get(i-3).getWorkers()+"_-_"+workerTipRate(someWorker));
+            System.out.println(weird);
+        }
+        System.out.println(weird);
+
+    }
 
     public static void workersPerHour(int somevalue){
         int numOfWorkers =0;
@@ -56,6 +78,10 @@ public class tipCalculator {
                     totaltipsperhour += tipSheet.get(j).getTips();
                 }
 
+
+            }
+            if(i == 20){
+                numOfWorkers= hourSheetslist.get(hourSheetslist.size()-1).getWorkers();
             }
 
             hourSheet workersThisHour = new hourSheet(i, numOfWorkers, aveTipsThisHour, totaltipsperhour);
@@ -65,7 +91,7 @@ public class tipCalculator {
         }
         System.out.println("numbers of hours in the work day: " +hourSheetslist.size());
 
-        int sumOfAveTips=0;
+        float sumOfAveTips=0;
         for(int k=0; k < hourSheetslist.size(); k++){
             sumOfAveTips += hourSheetslist.get(k).getTipsRate();
             System.out.println("hour: " + hourSheetslist.get(k).getHour()+ ", # of workers: "+
