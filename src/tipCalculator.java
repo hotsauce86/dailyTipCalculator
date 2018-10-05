@@ -10,10 +10,10 @@ public class tipCalculator {
 
         worker someWorker1 = new worker(0,3,9,(float)24.57);
         worker someWorker2 = new worker(1,6,15,(float)33.27);
-        worker someWorker3 = new worker(2,6,12,(float)17.74);
-        worker someWorker4 = new worker(3,10,12,(float)17.74);
-        worker someWorker5 = new worker(4,12,16,(float)17.74);
-        worker someWorker6 = new worker(5,12,20,(float)17.74);
+        worker someWorker3 = new worker(2,6,12,(float)16.77);
+        worker someWorker4 = new worker(3,10,12,(float)19.44);
+        worker someWorker5 = new worker(4,12,16,(float)12.82);
+        worker someWorker6 = new worker(5,12,20,(float)11.74);
         worker someWorker7 = new worker(6,15,20,(float)10.51);
 
 
@@ -38,24 +38,37 @@ public class tipCalculator {
 
     public static void workersPerHour(int somevalue){
         int numOfWorkers =0;
+        float aveTipsThisHour=0;
+        float totaltipsperhour=0;
         for(int i =3; i<=20; i++){
-
+           // aveTipsThisHour =0 ;
+            //adds or subtracts the number of workers in a hour during the work day
             for(int j = 0; j < tipSheet.size(); j++){
+
                 if (tipSheet.get(j).getStartHour() == i){
                     numOfWorkers++;
+                    aveTipsThisHour += workerTipRate(tipSheet.get(j));
+                    totaltipsperhour += tipSheet.get(j).getTips();
                 }
                 if (tipSheet.get(j).getEndHour() == i){
                     numOfWorkers--;
+                    aveTipsThisHour -= workerTipRate(tipSheet.get(j));
+                    totaltipsperhour -= tipSheet.get(j).getTips();
                 }
             }
-            hourSheet workersThisHour = new hourSheet(i, numOfWorkers);
+
+            hourSheet workersThisHour = new hourSheet(i, numOfWorkers, aveTipsThisHour, totaltipsperhour);
             hourSheetslist.add(workersThisHour);
+            System.out.println("_____-----_____");
 
         }
         System.out.println("numbers of hours in the work day: " +hourSheetslist.size());
 
         for(int k=0; k < hourSheetslist.size(); k++){
-            System.out.println(hourSheetslist.get(k).getHour()+ " "+hourSheetslist.get(k).getWorkers());
+            System.out.println("hour: " + hourSheetslist.get(k).getHour()+ ", # of workers: "+
+                    hourSheetslist.get(k).getWorkers()+", Ave Tip: "+
+                    hourSheetslist.get(k).getTipsRate() + " TipsTotal: " +
+                    hourSheetslist.get(k).getTipTotal());
         }
 
     }
@@ -64,6 +77,7 @@ public class tipCalculator {
         int hoursWorked = someworker.getEndHour()-someworker.getStartHour();
         float tipTotal = someworker.getTips();
 
+        //tip rate for the single employee
         float tipRate = tipTotal/hoursWorked;
         return tipRate;
     }
