@@ -31,7 +31,12 @@ public class tipCalculator {
         System.out.println("worker 1 tips per hour: "+ workerTipRate(someWorker2));
 
         System.out.println((workerTipRate(someWorker1)+workerTipRate(someWorker2)+workerTipRate(someWorker3)));
-
+        compareWorkerToStoreTips( someWorker1);
+        compareWorkerToStoreTips( someWorker2);
+        compareWorkerToStoreTips( someWorker3);
+        compareWorkerToStoreTips( someWorker4);
+        compareWorkerToStoreTips( someWorker5);
+        compareWorkerToStoreTips( someWorker6);
         compareWorkerToStoreTips( someWorker7);
 
     }
@@ -51,10 +56,12 @@ public class tipCalculator {
 
         for (int i = workerStart; i <=workerEnd; i++){
             weird += hourSheetslist.get(i-3).getTipsRate()/hourSheetslist.get(i-3).getWorkers()-workerTipRate(someWorker);
-            System.out.println(hourSheetslist.get(i-3).getTipsRate()/hourSheetslist.get(i-3).getWorkers()+"_-_"+workerTipRate(someWorker));
-            System.out.println(weird);
+           // System.out.println("the difference values: " +hourSheetslist.get(i-3).getTipsRate()/hourSheetslist.get(i-3).getWorkers()+"_-_"+workerTipRate(someWorker)+ ", weird: " +weird);
+            //System.out.println("result; " +weird);
         }
-        System.out.println(weird);
+
+        System.out.println(", weird: " +weird);
+        //System.out.println(weird);
 
     }
 
@@ -78,7 +85,6 @@ public class tipCalculator {
                     totaltipsperhour += tipSheet.get(j).getTips();
                 }
 
-
             }
             if(i == 20){
                 numOfWorkers= hourSheetslist.get(hourSheetslist.size()-1).getWorkers();
@@ -86,7 +92,7 @@ public class tipCalculator {
 
             hourSheet workersThisHour = new hourSheet(i, numOfWorkers, aveTipsThisHour, totaltipsperhour);
             hourSheetslist.add(workersThisHour);
-            System.out.println("_____-----_____");
+
 
         }
         System.out.println("numbers of hours in the work day: " +hourSheetslist.size());
