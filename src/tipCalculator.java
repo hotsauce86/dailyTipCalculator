@@ -1,20 +1,77 @@
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Random;
+import java.math.BigDecimal;
 public class tipCalculator {
 
     static ArrayList<worker> tipSheet = new ArrayList<>();
 
     static ArrayList<hourSheet> hourSheetslist = new ArrayList<>();
 
+    static ArrayList<Float> exampleTips = new ArrayList<>();
+
     public static void main(String args[]){
 
-        worker someWorker1 = new worker(0,3,9,(float)24.57);
-        worker someWorker2 = new worker(1,6,15,(float)33.27);
-        worker someWorker3 = new worker(2,6,12,(float)16.77);
-        worker someWorker4 = new worker(3,10,12,(float)19.44);
-        worker someWorker5 = new worker(4,12,16,(float)12.82);
-        worker someWorker6 = new worker(5,12,20,(float)11.74);
-        worker someWorker7 = new worker(6,15,20,(float)10.51);
+        /*
+                PRE-DETERMINDED TIPS TEST CASE
+
+                in this section, the tips per hour to the store are given.
+                all but one of the workers should post accurate tips, with
+                someone taking extra cash for themselves, reducing the pay
+                for the other workers
+
+                Payout should follow the amount of tips made per hour for each
+                worker on shidt, with more workers splitting the value up more
+         */
+        //3am
+        float tips1 = 2.00f;    exampleTips.add(tips1);
+        float tips2 = 3.00f;    exampleTips.add(tips2);
+        float tips3 = 2.00f;    exampleTips.add(tips3);
+        //6am
+        float tips4 = 3.50f;    exampleTips.add(tips4);
+        float tips5 = 4.00f;    exampleTips.add(tips5);
+        float tips6 = 5.00f;    exampleTips.add(tips6);
+        //9am
+        float tips7 = 6.00f;    exampleTips.add(tips7);
+        float tips8 = 7.25f;    exampleTips.add(tips8);
+        float tips9 = 8.75f;    exampleTips.add(tips9);
+        //12pm
+        float tips10 = 4.00f;   exampleTips.add(tips10);
+        float tips11 = 3.25f;   exampleTips.add(tips11);
+        float tips12 = 4.00f;   exampleTips.add(tips12);
+        //3pm 15
+        float tips13 = 3.00f;   exampleTips.add(tips13);
+        float tips14 = 4.50f;   exampleTips.add(tips14);
+        float tips15 = 5.00f;   exampleTips.add(tips15);
+        //6pm 18
+        float tips16 = 2.00f;   exampleTips.add(tips16);
+        float tips17 = 0.00f;   exampleTips.add(tips17);
+        float tips18 = 0.00f;   exampleTips.add(tips18);
+
+
+        //random value generator needs fixing
+        for (int i = 0; i <18; i ++){
+            Random rand = new Random();
+
+            float x = 3+rand.nextFloat()*(15-3);
+          //  exampleTips.add(x);
+
+        }
+
+        for (float temp : exampleTips){
+            System.out.println(temp);
+        }
+
+
+
+        //test case for workers
+        worker someWorker1 = new worker(0,3,9,(float)   11.17);
+        worker someWorker2 = new worker(1,6,15,(float)  16.25);
+        worker someWorker3 = new worker(2,6,12,(float)  12.50);
+        worker someWorker4 = new worker(3,10,12,(float) 7.75);
+        worker someWorker5 = new worker(4,12,16,(float) 4.75);
+        worker someWorker6 = new worker(5,12,20,(float) 10.50);
+        worker someWorker7 = new worker(6,15,20,(float) 6.75);
 
 
         tipSheet.add(someWorker1);
