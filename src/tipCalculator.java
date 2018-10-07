@@ -11,7 +11,7 @@ public class tipCalculator {
     static ArrayList<hourSheet> hourSheetslist = new ArrayList<>();
 
     //example list if we had knowledge of how many tips we have
-    static ArrayList<Float> exampleTips = new ArrayList<>();
+    static ArrayList<actualTips> exampleTips = new ArrayList<>();
 
     //used to add all the tips before a new employee starts their shift
     //and modify the expected tipRate
@@ -32,29 +32,29 @@ public class tipCalculator {
                 worker on shift, with more workers splitting the value up more
          */
         //3am
-        float tips1 = 2.00f;    exampleTips.add(tips1);
-        float tips2 = 3.00f;    exampleTips.add(tips2);
-        float tips3 = 2.00f;    exampleTips.add(tips3);
+        actualTips tips1 = new actualTips(3,2.00f);    exampleTips.add(tips1);
+        actualTips tips2 = new actualTips(4,3.00f);    exampleTips.add(tips2);
+        actualTips tips3 = new actualTips(5,2.00f);    exampleTips.add(tips3);
         //6am
-        float tips4 = 3.50f;    exampleTips.add(tips4);
-        float tips5 = 4.00f;    exampleTips.add(tips5);
-        float tips6 = 5.00f;    exampleTips.add(tips6);
+        actualTips tips4 = new actualTips(6,3.50f);    exampleTips.add(tips4);
+        actualTips tips5 = new actualTips(7,4.00f);    exampleTips.add(tips5);
+        actualTips tips6 = new actualTips(8,5.00f);    exampleTips.add(tips6);
         //9am
-        float tips7 = 6.00f;    exampleTips.add(tips7);
-        float tips8 = 7.25f;    exampleTips.add(tips8);
-        float tips9 = 8.75f;    exampleTips.add(tips9);
+        actualTips tips7 = new actualTips(9,6.00f);    exampleTips.add(tips7);
+        actualTips tips8 = new actualTips(10,7.25f);    exampleTips.add(tips8);
+        actualTips tips9 = new actualTips(11,8.75f);    exampleTips.add(tips9);
         //12pm
-        float tips10 = 4.00f;   exampleTips.add(tips10);
-        float tips11 = 3.25f;   exampleTips.add(tips11);
-        float tips12 = 4.00f;   exampleTips.add(tips12);
+        actualTips tips10 = new actualTips(12,4.00f);   exampleTips.add(tips10);
+        actualTips tips11 = new actualTips(13,3.25f);   exampleTips.add(tips11);
+        actualTips tips12 = new actualTips(14,4.00f);   exampleTips.add(tips12);
         //3pm 15
-        float tips13 = 3.00f;   exampleTips.add(tips13);
-        float tips14 = 4.50f;   exampleTips.add(tips14);
-        float tips15 = 5.00f;   exampleTips.add(tips15);
+        actualTips tips13 = new actualTips(15,3.00f);   exampleTips.add(tips13);
+        actualTips tips14 = new actualTips(16,4.50f);   exampleTips.add(tips14);
+        actualTips tips15 = new actualTips(17,5.00f);   exampleTips.add(tips15);
         //6pm 18
-        float tips16 = 2.00f;   exampleTips.add(tips16);
-        float tips17 = 0.00f;   exampleTips.add(tips17);
-        float tips18 = 0.00f;   exampleTips.add(tips18);
+        actualTips tips16 = new actualTips(18,2.00f);   exampleTips.add(tips16);
+        actualTips tips17 = new actualTips(19,0.00f);   exampleTips.add(tips17);
+        actualTips tips18 = new actualTips(20,0.00f);   exampleTips.add(tips18);
 
 
         //random value generator needs fixing
@@ -66,12 +66,13 @@ public class tipCalculator {
 
         }
 
-        for (float temp : exampleTips){
-            System.out.println(temp);
+        for (actualTips temp : exampleTips){
+            System.out.println(temp.getHour()+"---"+temp.getTips());
         }
 
         /*
-               //test case for workers with someone taking extra tips?
+        //OLD test case for workers with someone taking extra tips?
+
         worker someWorker1 = new worker(0,3,9,(float)   11.17);//check
         worker someWorker2 = new worker(1,6,15,(float)  16.25);
         worker someWorker3 = new worker(2,6,12,(float)  12.50);
@@ -85,9 +86,9 @@ public class tipCalculator {
 
 
 
-
+        /*
         worker someWorker8 = new worker(7, 6,12, (float)15);
-        worker someWorker9 = new worker(8, 6, 12, (float)13);
+        worker someWorker9 = new worker(8, 6, 12, (float)15);
 
         tipSheet.add(someWorker8);
         tipSheet.add(someWorker9);
@@ -95,9 +96,9 @@ public class tipCalculator {
         workersPerHour(1);
         compareWorkerToStoreTips( someWorker8);
         compareWorkerToStoreTips( someWorker9);
+        */
 
 
-        /*
         worker someWorker1 = new worker(0,3,9,(float)   11.17);//check
         worker someWorker2 = new worker(1,6,15,(float)  15.92);
         worker someWorker3 = new worker(2,6,12,(float)  12.50);
@@ -126,7 +127,7 @@ public class tipCalculator {
         compareWorkerToStoreTips( someWorker5);
         compareWorkerToStoreTips( someWorker6);
         compareWorkerToStoreTips( someWorker7);
-        */
+
         BucketFiller();
 
     }
@@ -214,12 +215,32 @@ public class tipCalculator {
 
     public static void BucketFiller(){
         int currentWorkers =0;
+        float currentTotalTips=0;
+        int hoursToLoop=0;
+        int lastLoopHour;
         for (hourSheet temp : hourSheetslist){
 
             if(temp.getWorkers() != currentWorkers){
-                Bucket bucks = new Bucket(temp.getHour(), temp.getTipTotal());
+                for(actualTips theseExampleTips: exampleTips){
+                    if(theseExampleTips.getHour() < hoursToLoop){
+                        currentTotalTips += theseExampleTips.getTips();
+                    }
+                }
+                Bucket bucks = new Bucket(temp.getHour(), currentTotalTips);
+                BucketForTips.add(bucks);
+                currentTotalTips =0;
+                currentWorkers=temp.getWorkers();
+            }
+            if(temp.getHour()==19){
+                for(actualTips theseExampleTips: exampleTips){
+                    if(theseExampleTips.getHour() < hoursToLoop){
+                        currentTotalTips += theseExampleTips.getTips();
+                    }
+                }
+                Bucket bucks = new Bucket(temp.getHour(), currentTotalTips);
                 BucketForTips.add(bucks);
             }
+            hoursToLoop++;
         }
 
         for( Bucket temp : BucketForTips){
