@@ -128,7 +128,7 @@ public class tipCalculator {
         compareWorkerToStoreTips( someWorker6);
         compareWorkerToStoreTips( someWorker7);
 
-        BucketFiller();
+        BucketFiller2();
 
     }
     //////////////////////////////////////////////////END OF MAIN//////////////////////////////////////////////////////
@@ -213,13 +213,37 @@ public class tipCalculator {
         return tipRate;
     }
 
+    public static void BucketFiller2(){
+        boolean addToBucket =false;
+        float tipsInBucket=0;
+
+        for(actualTips temp : exampleTips){
+            for(worker sheet: tipSheet){
+                if(sheet.getStartHour()==temp.getHour()){
+                    addToBucket = true;
+                }
+                if(sheet.getEndHour() == temp.getHour()){
+                    addToBucket = true;
+                }
+            }
+            tipsInBucket += temp.getTips();
+            if(addToBucket==true){
+                Bucket someBucket = new Bucket(temp.getHour(), tipsInBucket);
+                BucketForTips.add(someBucket);
+                tipsInBucket=0;
+                addToBucket=false;
+            }
+        }
+        for( Bucket temp : BucketForTips){
+            System.out.println(temp.getTimeFilled()+": "+temp.getGatheredTips());
+        }
+    }
     public static void BucketFiller(){
         int currentWorkers =0;
         float currentTotalTips=0;
         int hoursToLoop=0;
         int lastLoopHour;
         for (hourSheet temp : hourSheetslist){
-
             if(temp.getWorkers() != currentWorkers){
                 for(actualTips theseExampleTips: exampleTips){
                     if(theseExampleTips.getHour() < hoursToLoop){
@@ -242,7 +266,6 @@ public class tipCalculator {
             }
             hoursToLoop++;
         }
-
         for( Bucket temp : BucketForTips){
             System.out.println(temp.getTimeFilled()+": "+temp.getGatheredTips());
         }
