@@ -31,8 +31,8 @@ public class tipCalculator {
                 Payout should follow the amount of tips made per hour for each
                 worker on shift, with more workers splitting the value up more
          */
-        //3am
-        actualTips tips1 = new actualTips(3,2.00f);    exampleTips.add(tips1);
+        //3am   -- start of the first hour should have no tips
+        actualTips tips1 = new actualTips(3,0.00f);    exampleTips.add(tips1);
         actualTips tips2 = new actualTips(4,3.00f);    exampleTips.add(tips2);
         actualTips tips3 = new actualTips(5,2.00f);    exampleTips.add(tips3);
         //6am
@@ -47,14 +47,14 @@ public class tipCalculator {
         actualTips tips10 = new actualTips(12,4.00f);   exampleTips.add(tips10);
         actualTips tips11 = new actualTips(13,3.25f);   exampleTips.add(tips11);
         actualTips tips12 = new actualTips(14,4.00f);   exampleTips.add(tips12);
-        //3pm 15
+        //3pm
         actualTips tips13 = new actualTips(15,3.00f);   exampleTips.add(tips13);
         actualTips tips14 = new actualTips(16,4.50f);   exampleTips.add(tips14);
         actualTips tips15 = new actualTips(17,5.00f);   exampleTips.add(tips15);
-        //6pm 18
+        //6pm 18  -- start of the close hour should have the last tips of the day
         actualTips tips16 = new actualTips(18,2.00f);   exampleTips.add(tips16);
         actualTips tips17 = new actualTips(19,0.00f);   exampleTips.add(tips17);
-        actualTips tips18 = new actualTips(20,0.00f);   exampleTips.add(tips18);
+        actualTips tips18 = new actualTips(20,2.00f);   exampleTips.add(tips18);
 
 
         //random value generator needs fixing
@@ -99,7 +99,7 @@ public class tipCalculator {
         */
 
 
-        worker someWorker1 = new worker(0,3,9,(float)   11.17);//check
+        worker someWorker1 = new worker(0,3,9,(float)   13.17);//check
         worker someWorker2 = new worker(1,6,15,(float)  15.92);
         worker someWorker3 = new worker(2,6,12,(float)  12.50);
         worker someWorker4 = new worker(3,10,14,(float) 7.15);  //fixed 4 hour shift
@@ -130,6 +130,15 @@ public class tipCalculator {
 
         BucketFiller2();
 
+        System.out.println(BucketForTips.size()+", is the size of BucketForTips");
+        WorkerBucketComparator(someWorker1);
+        WorkerBucketComparator(someWorker2);
+        WorkerBucketComparator(someWorker3);
+        WorkerBucketComparator(someWorker4);
+        WorkerBucketComparator(someWorker5);
+        WorkerBucketComparator(someWorker6);
+        WorkerBucketComparator(someWorker7);
+
     }
     //////////////////////////////////////////////////END OF MAIN//////////////////////////////////////////////////////
     /*
@@ -153,14 +162,14 @@ public class tipCalculator {
         }
         //if a values is off from the expected amount
         if(weird < -1.5 || weird > 1.5){
-            System.out.println(" WARNING: " +weird);
+            System.out.println("workerID: "+ someWorker.getWorkerID()+" WARNING: " +weird);
         }
         else
-        System.out.println(" weird: " +weird);
+        System.out.println("workerID: "+ someWorker.getWorkerID()+" weird: " +weird);
         //System.out.println(weird);
 
     }
-
+    //////////////////////////////////////////////////////CHEAT SHEET FOR TIPS//////////////////////////////////////////
     public static void workersPerHour(int somevalue){
         int numOfWorkers =0;
         float aveTipsThisHour=0;
@@ -203,7 +212,7 @@ public class tipCalculator {
         System.out.println("Expected tips: "+ sumOfAveTips+", Actual tips: "+totaltipsperhour);
 
     }
-
+//////////////////////////////////////////////////////////////ESTIMATING HOW MUCH WORKER MAKES ON AVE///////////////////
     public static float workerTipRate(worker someworker){
         int hoursWorked = someworker.getEndHour()-someworker.getStartHour();
         float tipTotal = someworker.getTips();
@@ -212,7 +221,7 @@ public class tipCalculator {
         float tipRate = tipTotal/hoursWorked;
         return tipRate;
     }
-
+//////////////////////////////////////////////////////////CHECKING TIPS WHEN WORKERS START OR END SHIFT//////////////////
     public static void BucketFiller2(){
         boolean addToBucket =false;
         float tipsInBucket=0;
@@ -234,10 +243,53 @@ public class tipCalculator {
                 addToBucket=false;
             }
         }
+        float checkTips =0;
         for( Bucket temp : BucketForTips){
-            System.out.println(temp.getTimeFilled()+": "+temp.getGatheredTips());
+            System.out.println("Time Filled: "+temp.getTimeFilled()+", collected: "+temp.getGatheredTips());
+            checkTips += temp.getGatheredTips();
         }
+        System.out.println("Checking for tips: "+ checkTips);
+
     }
+
+
+
+    ////////////////////////////////////COMPARE BUCKET WITH WORKER DURING SHIFT/////////////////////////////////////////
+    public static void WorkerBucketComparator(worker someWorker){
+
+        float cup=0;
+        boolean working=false;
+        int currentHourWorkers=0;
+        for(Bucket temp : BucketForTips){
+
+
+            if(working==true){
+                for(hourSheet temp2: hourSheetslist){
+                    if(temp2.getHour()+1==temp.getTimeFilled()){
+                        currentHourWorkers=temp2.getWorkers();
+                    }
+                }
+                cup += temp.getGatheredTips()/currentHourWorkers;
+                System.out.println("Bucket: "+temp.getGatheredTips()+",\tcup: "+cup+", #workers: "+currentHourWorkers+", at time:"+temp.getTimeFilled());
+            }
+            if(temp.getTimeFilled()==someWorker.getStartHour()){
+                working=true;
+            }
+            if(temp.getTimeFilled()==someWorker.getEndHour()){
+                break;
+            }
+
+        }
+        System.out.println("workerID: " + someWorker.getWorkerID()+ ",  collected tips:  "+cup +", recorded tips: " +someWorker.getTips()+", Difference: "+(someWorker.getTips()-cup));
+
+    }
+
+
+
+
+
+
+    //////////////////////////////////////////////////////////THIS DOES NOT WORK////////////////////////////////////////
     public static void BucketFiller(){
         int currentWorkers =0;
         float currentTotalTips=0;
@@ -266,12 +318,20 @@ public class tipCalculator {
             }
             hoursToLoop++;
         }
+
         for( Bucket temp : BucketForTips){
             System.out.println(temp.getTimeFilled()+": "+temp.getGatheredTips());
+
         }
+
     }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+/*
+        (\_(\
+        (='-')    & % $
+       *(")_(")   | | |
+       BUNNY OF GOOD LUCK
+ */
 
 }
