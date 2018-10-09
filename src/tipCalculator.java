@@ -153,6 +153,7 @@ public class tipCalculator {
 
      */
     public static void compareWorkerToStoreTips( worker someWorker){
+        System.out.println("////////////////////////////////");
         int workerStart = someWorker.getStartHour();
         int workerEnd = someWorker.getEndHour();
         float weird=0;
@@ -173,6 +174,7 @@ public class tipCalculator {
     }
     //////////////////////////////////////////////////////CHEAT SHEET FOR TIPS//////////////////////////////////////////
     public static void workersPerHour(int somevalue){
+        System.out.println("//////////////////////////");
         int numOfWorkers =0;
         float aveTipsThisHour=0;
         float totaltipsperhour=0;
@@ -216,6 +218,7 @@ public class tipCalculator {
     }
 //////////////////////////////////////////////////////////////ESTIMATING HOW MUCH WORKER MAKES ON AVE///////////////////
     public static float workerTipRate(worker someworker){
+
         int hoursWorked = someworker.getEndHour()-someworker.getStartHour();
         float tipTotal = someworker.getTips();
 
@@ -225,6 +228,7 @@ public class tipCalculator {
     }
 //////////////////////////////////////////////////////////CHECKING TIPS WHEN WORKERS START OR END SHIFT//////////////////
     public static void BucketFiller2(){
+        System.out.println("//////////////////////");
         boolean addToBucket =false;
         float tipsInBucket=0;
 
@@ -258,7 +262,7 @@ public class tipCalculator {
 
     ////////////////////////////////////COMPARE BUCKET WITH WORKER DURING SHIFT/////////////////////////////////////////
     public static void WorkerBucketComparator(worker someWorker){
-
+        System.out.println("/////////////");
         float cup=0;
         boolean working=false;
         int currentHourWorkers=0;
@@ -272,7 +276,7 @@ public class tipCalculator {
                     }
                 }
                 cup += temp.getGatheredTips()/currentHourWorkers;
-                System.out.println("Bucket: "+temp.getGatheredTips()+",\tcup: "+cup+", #workers: "+currentHourWorkers+", at time:"+temp.getTimeFilled());
+                System.out.println("Bucket: "+temp.getGatheredTips()+",\tcup: "+cup+", #workers: "+currentHourWorkers+", at time: "+temp.getTimeFilled());
             }
             if(temp.getTimeFilled()==someWorker.getStartHour()){
                 working=true;
@@ -294,6 +298,7 @@ public class tipCalculator {
             hours.
      */
     public static void compareTwoWorkers(worker worker1, worker worker2){
+        System.out.println("//////////////");
         if(worker1.getEndHour() < worker2.getStartHour() || worker2.getEndHour() < worker1.getStartHour()){
             System.out.println("incompatable: workers not in at the same time");
         }
@@ -355,10 +360,10 @@ public class tipCalculator {
             }
 
             System.out.println("//////////Comparing two workers///////////");
-            System.out.println("Hard tip Difference: " + (worker1.getTips() - worker2.getTips()));
-            System.out.println("Ave tipRate Diff"+ (w1TipsAve-w2TipsAve));
-            System.out.println("shared hours: "+ hoursShared);
-            System.out.println("hours diff: "+hoursDiff);
+            System.out.println("Hard tip Difference: " +"\t"+ (worker1.getTips() - worker2.getTips()));
+            System.out.println("Ave tipRate Diff: "+ "\t"+(w1TipsAve-w2TipsAve));
+            System.out.println("Shared hours: "+ "\t"+hoursShared);
+            System.out.println("Diff hours: "+"\t"+hoursDiff);
         }
     }
 
