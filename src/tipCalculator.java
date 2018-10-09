@@ -139,6 +139,8 @@ public class tipCalculator {
         WorkerBucketComparator(someWorker6);
         WorkerBucketComparator(someWorker7);
 
+
+        compareTwoWorkers(someWorker4, someWorker5);
     }
     //////////////////////////////////////////////////END OF MAIN//////////////////////////////////////////////////////
     /*
@@ -283,7 +285,82 @@ public class tipCalculator {
         System.out.println("workerID: " + someWorker.getWorkerID()+ ",  collected tips:  "+cup +", recorded tips: " +someWorker.getTips()+", Difference: "+(someWorker.getTips()-cup));
 
     }
+//////////////////////////////////////////////////////////COMPARE TWO WORKERS//////////////////////////////
+    /*
+            If two workers were working in the same hours during their shift, their tips values
+            should be more comparable that to the stores overall tipAverage. The data on what the
+            exact tips are per hour should still be unknown and variable by the hour, and the different
+            hours that each worker did not share can reveal some change in the tip rate during the other
+            hours.
+     */
+    public static void compareTwoWorkers(worker worker1, worker worker2){
+        if(worker1.getEndHour() < worker2.getStartHour() || worker2.getEndHour() < worker1.getStartHour()){
+            System.out.println("incompatable: workers not in at the same time");
+        }
+        else{
+            float w1TipsAve = workerTipRate(worker1);
+            float w2TipsAve = workerTipRate(worker2);
 
+            int hoursShared = 0;
+            int hoursDiff =0;
+
+            //to find what hours workers shared
+            if(worker1.getStartHour()<worker2.getStartHour()){
+                boolean shared=false;
+                for(int i = worker1.getStartHour(); i <worker1.getEndHour(); i++){
+                    if(i == worker2.getStartHour()){
+                        System.out.println("worker2 joins worker1");
+                        shared=true;
+                    }
+                    if(i == worker2.getEndHour()){
+                        System.out.println("worker2 left");
+                        shared=false;
+                    }
+                    if(shared==true){
+                        hoursShared++;
+                    }
+                    if(shared==false){
+                        hoursDiff++;
+                    }
+                    if(i == worker1.getEndHour()-1 && worker1.getEndHour() < worker2.getEndHour()){
+                        for(int j = i+1; j < worker2.getEndHour(); j++){
+                            hoursDiff++;
+                        }
+                    }
+                }
+            }
+            else{
+                boolean shared=false;
+                for(int i = worker2.getStartHour(); i <worker2.getEndHour(); i++){
+                    if(i == worker1.getStartHour()){
+                        System.out.println("worker1 joins worker2");
+                        shared=true;
+                    }
+                    if(i == worker1.getEndHour()){
+                        System.out.println("worker1 left");
+                        shared=false;
+                    }
+                    if(shared==true){
+                        hoursShared++;
+                    }
+                    if(shared==false){
+                        hoursDiff++;
+                    }
+                    if(i == worker2.getEndHour()-1 && worker2.getEndHour() < worker1.getEndHour()){
+                        for(int j = i+1; j < worker1.getEndHour(); j++){
+                            hoursDiff++;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("//////////Comparing two workers///////////");
+            System.out.println("Hard tip Difference: " + (worker1.getTips() - worker2.getTips()));
+            System.out.println("Ave tipRate Diff"+ (w1TipsAve-w2TipsAve));
+            System.out.println("shared hours: "+ hoursShared);
+            System.out.println("hours diff: "+hoursDiff);
+        }
+    }
 
 
 
